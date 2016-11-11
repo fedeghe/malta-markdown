@@ -1,0 +1,28 @@
+{
+  "name": "malta-markdown",
+  "version": "0.0.5",
+  "description": "Malta plugin to live compile markdown file into html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://fedeghe@github.com/fedeghe/malta-markdowngit"
+  },
+  "keywords": [
+    "malta",
+    "malta plugin",
+    "malta markdown",
+    "malta markdown plugin"
+  ],
+  "author": "Federico Ghedina <federico.ghedina@gmail.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/fedeghe/malta-markdown/issues"
+  },
+  "dependencies": {
+    "markdown": "^0.5.0",
+    "malta": ">=3.0.0"
+  },
+  "main": "./index.js"
+}
