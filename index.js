@@ -8,24 +8,19 @@ function malta_markdown(o, options) {
 	var self = this,
 		start = new Date(),
 		msg,
-        pluginName = path.basename(path.dirname(__filename)),
-		doErr = function (e) {
-			console.log(('[ERROR on ' + o.name + ' using ' + pluginName + '] :').red());
-			console.dir(e);
-			self.stop();
-		};
+        pluginName = path.basename(path.dirname(__filename));
 
 	o.name = o.name.replace(/\.md$/, '.html');
 
-	try{
+	try {
 		o.content = markdown.toHTML(o.content);
-	} catch(err) {
-		doErr(err);
+	} catch (err) {
+		self.doErr(err, o, pluginName);
 	}
 
 	return function (solve, reject){
 		fs.writeFile(o.name, o.content, function(err) {
-			err && doErr(err);
+			err && self.doErr(err, o, pluginName);
 			msg = 'plugin ' + pluginName.white() + ' wrote ' + o.name + ' (' + self.getSize(o.name) + ')';
 			solve(o);
 			self.notifyAndUnlock(start, msg);
