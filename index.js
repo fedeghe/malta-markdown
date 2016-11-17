@@ -7,22 +7,26 @@ var markdown = require("markdown").markdown,
 function malta_markdown(o, options) {
 	var self = this,
 		start = new Date(),
-		msg;
+		msg,
+        pluginName = path.basename(path.dirname(__filename)),
+		doErr = function (e) {
+			console.log(('[ERROR on ' + o.name + ' using ' + pluginName + '] :').red());
+			console.dir(e);
+			self.stop();
+		};
 
 	o.name = o.name.replace(/\.md$/, '.html');
 
-	o.content = markdown.toHTML(o.content);
+	try{
+		o.content = markdown.toHTML(o.content);
+	} catch(err) {
+		doErr(err);
+	}
 
 	return function (solve, reject){
-		
 		fs.writeFile(o.name, o.content, function(err) {
-			if (err == null) {
-				msg = 'plugin ' + path.basename(path.dirname(__filename)).white() + ' wrote ' + o.name + ' (' + self.getSize(o.name) + ')';
-			} else {
-				console.log('[ERROR] markdown says:');
-				console.dir(err);
-				self.stop();
-			}
+			err && doErr(err);
+			msg = 'plugin ' + pluginName.white() + ' wrote ' + o.name + ' (' + self.getSize(o.name) + ')';
 			solve(o);
 			self.notifyAndUnlock(start, msg);
 		});
