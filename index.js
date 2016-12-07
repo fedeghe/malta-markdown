@@ -8,9 +8,8 @@ function malta_markdown(o, options) {
 	var self = this,
 		start = new Date(),
 		msg,
-        pluginName = path.basename(path.dirname(__filename));
-
-	o.name = o.name.replace(/\.md$/, '.html');
+        pluginName = path.basename(path.dirname(__filename)),
+        oldname = o.name;
 
 	try {
 		o.content = markdown.toHTML(o.content);
@@ -18,10 +17,13 @@ function malta_markdown(o, options) {
 		self.doErr(err, o, pluginName);
 	}
 
+	o.name = o.name.replace(/\.md$/, '.html');
+
 	return function (solve, reject){
 		fs.writeFile(o.name, o.content, function(err) {
 			err && self.doErr(err, o, pluginName);
 			msg = 'plugin ' + pluginName.white() + ' wrote ' + o.name + ' (' + self.getSize(o.name) + ')';
+			fs.unlink(oldname);
 			solve(o);
 			self.notifyAndUnlock(start, msg);
 		});
