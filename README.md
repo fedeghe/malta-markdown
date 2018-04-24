@@ -1,3 +1,10 @@
+---
+[![npm version](https://badge.fury.io/js/malta-markdown.svg)](http://badge.fury.io/js/malta-markdown)
+[![Dependencies](https://david-dm.org/fedeghe/malta-markdown.svg)](https://david-dm.org/fedeghe/malta-markdown)
+[![npm downloads](https://img.shields.io/npm/dt/malta-markdown.svg)](https://npmjs.org/package/malta-markdown)
+[![npm downloads](https://img.shields.io/npm/dm/malta-markdown.svg)](https://npmjs.org/package/malta-markdown)  
+---  
+
 This plugin can be used on: **.md** files  
 
 Options : no options  
