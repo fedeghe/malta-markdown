@@ -11,22 +11,25 @@ function malta_markdown(o, options) {
         pluginName = path.basename(path.dirname(__filename)),
         oldname = o.name;
 
-	try {
-		o.content = markdown.toHTML(o.content);
-	} catch (err) {
-		self.doErr(err, o, pluginName);
-	}
-
 	o.name = o.name.replace(/\.md$/, '.html');
 
 	return function (solve, reject){
-		fs.writeFile(o.name, o.content, function(err) {
-			err && self.doErr(err, o, pluginName);
-			msg = 'plugin ' + pluginName.white() + ' wrote ' + o.name + ' (' + self.getSize(o.name) + ')';
-			fs.unlink(oldname, () => {});
-			solve(o);
-			self.notifyAndUnlock(start, msg);
-		});
+        try {
+            o.content = markdown.toHTML(o.content);
+            fs.writeFile(o.name, o.content, function(err) {
+                err && self.doErr(err, o, pluginName);
+                msg = 'plugin ' + pluginName.white() + ' wrote ' + o.name + ' (' + self.getSize(o.name) + ')';
+                fs.unlink(oldname, () => {});
+                err
+                    ? reject(`Plugin ${pluginName} write error:\n${err}`)
+                    : solve(o);
+                self.notifyAndUnlock(start, msg);
+            });
+        } catch (err) {
+            self.doErr(err, o, pluginName);
+            reject(`Plugin ${pluginName} conversion error:\n${err}`)
+        }
+		
 	};
 }
 malta_markdown.ext = 'md';
