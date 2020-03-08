@@ -1,22 +1,21 @@
-require('malta').checkDeps('markdown');
-
-var markdown = require("markdown").markdown,
+const markdown = require("markdown").markdown,
 	path = require('path'),
 	fs = require('fs');
 
 function malta_markdown(o, options) {
-	var self = this,
+	const self = this,
 		start = new Date(),
-		msg,
         pluginName = path.basename(path.dirname(__filename)),
         oldname = o.name;
+    
+    let msg;
 
 	o.name = o.name.replace(/\.md$/, '.html');
 
-	return function (solve, reject){
+	return (solve, reject) => {
         try {
             o.content = markdown.toHTML(o.content);
-            fs.writeFile(o.name, o.content, function(err) {
+            fs.writeFile(o.name, o.content, err => {
                 err && self.doErr(err, o, pluginName);
                 msg = 'plugin ' + pluginName.white() + ' wrote ' + o.name + ' (' + self.getSize(o.name) + ')';
                 fs.unlink(oldname, () => {});
